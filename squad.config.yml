@@ -1,0 +1,46 @@
+# Squad Configuration
+# See README.md for full documentation
+
+team:
+  name: default-squad
+  agents:
+    - role: lead
+      model: flagship
+      description: "Orchestrates tasks, routes work, approves final output"
+    
+    - role: planner
+      model: reasoning
+      description: "Writes specs, architecture decisions, design docs"
+    
+    - role: coder
+      model: coding
+      description: "Implements features, fixes bugs, refactors code"
+    
+    - role: reviewer
+      model: analysis
+      description: "Code review, security audit, quality gates"
+
+workflow:
+  - name: plan
+    agent: planner
+    output: design_doc
+    
+  - name: implement
+    agent: coder
+    input: design_doc
+    output: code_changes
+    
+  - name: review
+    agent: reviewer
+    input: code_changes
+    output: review_feedback
+    
+  - name: approve
+    agent: lead
+    input: review_feedback
+    output: approved_changes
+
+defaults:
+  auto_push: true
+  test_before_merge: true
+  require_review: true
